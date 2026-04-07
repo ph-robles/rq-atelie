@@ -1,23 +1,9 @@
 import "./globals.css"
-import { Cormorant_Garamond, Jost } from "next/font/google"
+import type { Metadata } from "next"
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-})
-
-const jost = Jost({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-jost",
-})
-
-export const metadata = {
-  title: "RQ Ateliê — Crochê Artesanal",
-  description:
-    "Crochê e macramê artesanal feito à mão, ponto a ponto. Peças exclusivas e sob encomenda.",
+export const metadata: Metadata = {
+  title: "RQ Ateliê",
+  description: "Peças artesanais em crochê feitas à mão",
 }
 
 export default function RootLayout({
@@ -27,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={`${jost.variable} ${cormorant.variable}`}>
+      <body>
         {children}
       </body>
     </html>
