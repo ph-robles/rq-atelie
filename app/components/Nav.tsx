@@ -8,8 +8,12 @@ export default function Nav() {
 
             <nav>
                 <ul className="nav-left">
-                    <li><a href="#colecao">Coleção</a></li>
-                    <li><a href="#sobre">Sobre</a></li>
+                    <li>
+                        <a href="#colecao">Coleção</a>
+                    </li>
+                    <li>
+                        <a href="#sobre">Sobre</a>
+                    </li>
                 </ul>
 
                 <a href="/" className="nav-logo">
@@ -17,7 +21,13 @@ export default function Nav() {
                 </a>
 
                 <div className="nav-right">
-                    <a href="https://wa.me/5511999999999" target="_blank">Contato</a>
+                    <a
+                        href="https://wa.me/5511999999999"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Contato
+                    </a>
                 </div>
             </nav>
         </>
