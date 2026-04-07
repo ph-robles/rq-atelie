@@ -183,3 +183,64 @@ body {
   text-decoration: none;
   color: inherit;
 }
+
+/* =======================
+   HERO
+======================= */
+
+.hero {
+  padding: 100px 24px;
+  display: flex;
+  justify-content: center;
+  background: #faf9f7;
+}
+
+.hero-right {
+  max-width: 600px;
+}
+
+.hero-season {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.hero-title {
+  font-size: 48px;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.hero-title em {
+  color: #c4714a;
+  font-style: normal;
+}
+
+.hero-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-solid {
+  padding: 12px 20px;
+  background: #c4714a;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.btn-ghost {
+  padding: 12px 20px;
+  border: 1px solid #c4714a;
+  color: #c4714a;
+  text-decoration: none;
+  border-radius: 8px;
+}
