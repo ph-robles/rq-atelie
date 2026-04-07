@@ -1,6 +1,18 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --white: #FFFFFF;
+  --off: #FAFAF8;
+  --light: #F4F2EE;
+  --border: #E8E4DC;
+  --muted: #B0A898;
+  --mid: #7A7168;
+  --dark: #2C2520;
+  --black: #1A1410;
+  --accent: #C4714A;
+}
+
+body {
+  background: var(--white);
+  color: var;
 }
 
 @media (prefers-color-scheme: dark) {
