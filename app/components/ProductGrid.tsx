@@ -13,24 +13,46 @@ type Product = {
 }
 
 async function getProducts(): Promise<Product[]> {
-    const { data, error } = await supabase.from("products").select("*")
-    if (error) return []
+    const { data, error } = await supabase
+        .from("products")
+        .select("*")
+
+    if (error) {
+        console.error("Erro ao buscar produtos:", error)
+        return []
+    }
+
     return data as Product[]
 }
 
-function getImageUrl(path: string | null) {
+function getImageUrl(path: string | null): string | null {
     if (!path) return null
-    return supabase.storage
+
+    const { data } = supabase.storage
         .from("product-images")
-        .getPublicUrl(path).data.publicUrl
+        .getPublicUrl(path)
+
+    return data.publicUrl
 }
 
 export default function ProductGrid() {
     const [products, setProducts] = useState<Product[]>([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        getProducts().then(setProducts)
+        getProducts().then((data) => {
+            setProducts(data)
+            setLoading(false)
+        })
     }, [])
+
+    if (loading) {
+        return (
+            <div style={{ padding: "40px", textAlign: "center" }}>
+                Carregando produtos…
+            </div>
+        )
+    }
 
     return (
         <div id="colecao" className="product-grid">

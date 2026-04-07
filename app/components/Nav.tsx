@@ -6,7 +6,7 @@ export default function Nav() {
                 <span>PERSONALIZADAS</span>
             </div>
 
-            <nav>
+            <nav className="main-nav">
                 <ul className="nav-left">
                     <li>
                         <a href="#colecao">Coleção</a>
