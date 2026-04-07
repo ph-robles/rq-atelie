@@ -1,43 +1,58 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
+import { useRouter } from "next/navigation"
 
 export default function AdminPage() {
-    const [name, setName] = useState("")
-    const [price, setPrice] = useState("")
-    const [whatsappText, setWhatsappText] = useState("")
-    const [isNew, setIsNew] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const router = useRouter()
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault()
-        setLoading(true)
+    useEffect(() => {
+        async function checkAuth() {
+            const {
+                data: { session },
+            } = await supabase.auth.getSession()
 
-        const { error } = await supabase.from("products").insert({
-            name,
-            price: Number(price),
-            whatsapp_text: whatsappText,
-            is_new: isNew,
-        })
+            if (!session) {
+                router.push("/admin/login")
+                return
+            }
 
-        setLoading(false)
-
-        if (error) {
-            alert("Erro ao cadastrar produto")
-            console.error(error)
-            return
+            setLoading(false)
         }
 
-        alert("Produto cadastrado com sucesso ✅")
-        setName("")
-        setPrice("")
-        setWhatsappText("")
-        setIsNew(false)
+        checkAuth()
+    }, [router])
+
+    if (loading) {
+        return (
+            <main style={{ padding: "80px", textAlign: "center" }}>
+                Carregando...
+            </main>
+        )
     }
 
     return (
-        <main style={{ padding: "80px 40px", maxWidth: "600px", margin: "0 auto" }}>
+        <main style={{ padding: "80px", maxWidth: "600px", margin: "0 auto" }}>
+
+            {/* ✅ BOTÃO DE SAIR */}
+            <button
+                onClick={async () => {
+                    await supabase.auth.signOut()
+                    router.push("/admin/login")
+                }}
+                style={{
+                    marginBottom: "32px",
+                    background: "transparent",
+                    border: "1px solid #E8E4DC",
+                    padding: "10px 16px",
+                    cursor: "pointer",
+                }}
+            >
+                Sair
+            </button>
+
             <h1
                 style={{
                     fontFamily: "Cormorant Garamond, serif",
@@ -48,68 +63,11 @@ export default function AdminPage() {
                 Admin · RQ <em style={{ color: "#C4714A" }}>Ateliê</em>
             </h1>
 
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: "16px" }}>
-                    <label>Nome da peça</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        style={inputStyle}
-                    />
-                </div>
+            <p style={{ marginBottom: "24px" }}>
+                Você está logada ✅
+            </p>
 
-                <div style={{ marginBottom: "16px" }}>
-                    <label>Preço (R$)</label>
-                    <input
-                        type="number"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        required
-                        style={inputStyle}
-                    />
-                </div>
-
-                <div style={{ marginBottom: "16px" }}>
-                    <label>Texto do WhatsApp</label>
-                    <textarea
-                        value={whatsappText}
-                        onChange={(e) => setWhatsappText(e.target.value)}
-                        required
-                        rows={4}
-                        style={inputStyle}
-                    />
-                </div>
-
-                <div style={{ marginBottom: "24px" }}>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={isNew}
-                            onChange={(e) => setIsNew(e.target.checked)}
-                        />{" "}
-                        Marcar como novo
-                    </label>
-                </div>
-
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="btn-solid"
-                >
-                    {loading ? "Salvando..." : "Cadastrar produto"}
-                </button>
-            </form>
+            {/* Aqui fica o formulário de cadastro de produto */}
         </main>
     )
 }
-
-const inputStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "12px",
-    marginTop: "6px",
-    border: "1px solid #e8e4dc",
-    fontFamily: "inherit",
-}
-    
