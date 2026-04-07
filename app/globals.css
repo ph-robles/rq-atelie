@@ -1,8 +1,17 @@
-.product-grid {
+/* =======================
+   PRODUCT GRID (ISOLADO)
+======================= */
+
+#colecao.product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 32px;
+  margin-top: 40px;
 }
+
+/* =======================
+   PRODUCT CARD
+======================= */
 
 .product-card {
   display: flex;
@@ -10,43 +19,55 @@
   gap: 16px;
 }
 
-/* Container da imagem */
+/* =======================
+   PRODUCT IMAGE (SEGURO)
+======================= */
+
 .product-img {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  /* sempre quadrado */
+  padding-top: 100%; /* quadrado seguro (melhor que aspect-ratio) */
   overflow: hidden;
   border-radius: 16px;
   background: #f5f3ef;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.4s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.35s ease;
 }
 
-/* Imagem */
+/* Imagem cobre totalmente */
 .product-img img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 16px;
-  transition: transform 0.4s ease;
+  transition: transform 0.35s ease;
 }
 
-/* Hover (zoom suave + sombra maior) */
+/* Emoji fallback centralizado */
+.product-img span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover */
 .product-card:hover .product-img img {
   transform: scale(1.08);
 }
 
 .product-card:hover .product-img {
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
-/* Selo "Novo" */
+/* =======================
+   TAG "NOVO"
+======================= */
+
 .product-tag-new {
   position: absolute;
   top: 12px;
@@ -54,6 +75,7 @@
 
   background: #c4714a;
   color: #fff;
+
   font-size: 12px;
   padding: 6px 10px;
   border-radius: 12px;
@@ -62,7 +84,10 @@
   font-weight: 500;
 }
 
-/* Info */
+/* =======================
+   INFO
+======================= */
+
 .product-info {
   display: flex;
   flex-direction: column;
@@ -85,7 +110,10 @@
   font-weight: 600;
 }
 
-/* Botão */
+/* =======================
+   BUTTON
+======================= */
+
 .product-cta {
   margin-top: auto;
   padding: 12px;

@@ -13,27 +13,16 @@ type Product = {
 }
 
 async function getProducts(): Promise<Product[]> {
-    const { data, error } = await supabase
-        .from("products")
-        .select("*")
-
-    if (error) {
-        console.error(error)
-        return []
-    }
-
+    const { data, error } = await supabase.from("products").select("*")
+    if (error) return []
     return data as Product[]
 }
 
-/* 🔗 Gera URL pública da imagem no Supabase Storage */
-function getImageUrl(path: string | null): string | null {
+function getImageUrl(path: string | null) {
     if (!path) return null
-
-    const { data } = supabase.storage
+    return supabase.storage
         .from("product-images")
-        .getPublicUrl(path)
-
-    return data.publicUrl
+        .getPublicUrl(path).data.publicUrl
 }
 
 export default function ProductGrid() {
@@ -50,13 +39,9 @@ export default function ProductGrid() {
 
                 return (
                     <div key={p.id} className="product-card">
-
                         <div className="product-img">
                             {imageUrl ? (
-                                <img
-                                    src={imageUrl}
-                                    alt={p.name}
-                                />
+                                <img src={imageUrl} alt={p.name} />
                             ) : (
                                 <span style={{ fontSize: "40px" }}>🧶</span>
                             )}
@@ -68,11 +53,7 @@ export default function ProductGrid() {
 
                         <div className="product-info">
                             <div className="product-brand">RQ Ateliê</div>
-
-                            <div className="product-name">
-                                {p.name}
-                            </div>
-
+                            <div className="product-name">{p.name}</div>
                             <div className="product-price">
                                 R$ {Number(p.price).toFixed(2)}
                             </div>
