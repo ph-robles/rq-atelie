@@ -16,18 +16,17 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 // ── Tipos centralizados do banco ──────────────────────────────────────────────
 
 export type Product = {
-  id: string           // uuid
-  name: string
+  id: string
+  name: string | null
   description: string | null
-  price: number
-  image_path: string | null
-  category: string | null
+  price: number | null
+  image_url: string | null
+  whatsapp_text: string | null
   is_new: boolean
   is_available: boolean
   accepts_custom: boolean
-  whatsapp_text: string
-  created_at: string
 }
+
 
 export type Store = {
   id: string
