@@ -13,6 +13,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+console.log("SUPABASE URL:", supabaseUrl)
+console.log("SUPABASE ANON KEY EXISTS:"), !!supabaseAnonKey
 // ── Tipos centralizados do banco ──────────────────────────────────────────────
 
 export type Product = {
