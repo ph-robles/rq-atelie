@@ -618,3 +618,47 @@ footer {
   text-transform: uppercase;
   color: var(--mid);
 }
+
+.product-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-img__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+footer {
+  background: var(--black);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 60px 80px 36px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid #2a2520;
+}
+
+.footer-brand {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 24px;
+  letter-spacing: 4px;
+  color: white;
+}
+
+.footer-bottom {
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
