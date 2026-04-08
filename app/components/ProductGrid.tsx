@@ -1,20 +1,23 @@
-// app/components/ProductGrid.tsx
 "use client"
 
 import { useEffect, useState } from "react"
-import Image from "next/image"
-import { supabase, type Product } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase"
 import { WHATSAPP_NUMBER } from "@/lib/config"
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function getImageUrl(path: string | null): string | null {
-    if (!path) return null
-    const { data } = supabase.storage
-        .from("product-images")
-        .getPublicUrl(path)
-    return data.publicUrl
+// Tipagem do produto (ajustada à sua tabela)
+export interface Product {
+    id: string
+    name: string
+    description?: string | null
+    price: number
+    image_url?: string | null
+    whatsapp_text: string
+    is_new: boolean
+    accepts_custom: boolean
+    is_available: boolean
 }
+
+// ── Helpers ────────────────────────────────────────────────────────────────
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("pt-BR", {
@@ -27,7 +30,7 @@ function buildWhatsAppLink(text: string): string {
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
 }
 
-// ── Sub-componentes ───────────────────────────────────────────────────────────
+// ── Sub‑componentes ─────────────────────────────────────────────────────────
 
 function ProductCardSkeleton() {
     return (
@@ -47,13 +50,16 @@ function EmptyState() {
     return (
         <div className="product-grid-empty">
             <span className="product-grid-empty__icon">🧶</span>
-            <p className="product-grid-empty__title">Nenhuma peça disponível no momento</p>
-            <p className="product-grid-empty__sub">
-                Entre em contato pelo WhatsApp para ver encomendas personalizadas.
+            <p className="product-grid-empty__title">
+                Nenhuma peça disponível no momento
             </p>
+            <p className="product-grid-empty__sub">
+                Entre em contato pelo WhatsApp para encomendas personalizadas.
+            </p>
+
             <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                    "Olá! Quero saber sobre peças disponíveis e encomendas."
+                    "Olá! Gostaria de saber sobre peças disponíveis e encomendas."
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -69,8 +75,12 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
     return (
         <div className="product-grid-error">
             <span className="product-grid-error__icon">⚠️</span>
-            <p className="product-grid-error__title">Não foi possível carregar os produtos</p>
-            <p className="product-grid-error__sub">Verifique sua conexão e tente novamente.</p>
+            <p className="product-grid-error__title">
+                Não foi possível carregar os produtos
+            </p>
+            <p className="product-grid-error__sub">
+                Verifique sua conexão e tente novamente.
+            </p>
             <button onClick={onRetry} className="btn-solid">
                 Tentar novamente
             </button>
@@ -79,21 +89,18 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
 }
 
 function ProductCard({ product }: { product: Product }) {
-    const imageUrl = getImageUrl(product.image_path)
     const whatsappLink = buildWhatsAppLink(product.whatsapp_text)
 
     return (
         <div className="product-card">
             {/* Imagem */}
             <div className="product-img">
-                {imageUrl ? (
-                    <Image
-                        src={imageUrl}
+                {product.image_url ? (
+                    <img
+                        src={product.image_url}
                         alt={product.name}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         className="product-img__photo"
-                        style={{ objectFit: "cover" }}
+                        loading="lazy"
                     />
                 ) : (
                     <span className="product-img__placeholder">🧶</span>
@@ -104,7 +111,9 @@ function ProductCard({ product }: { product: Product }) {
                 )}
 
                 {product.accepts_custom && (
-                    <span className="product-tag product-tag--custom">Personalizado</span>
+                    <span className="product-tag product-tag--custom">
+                        Personalizado
+                    </span>
                 )}
             </div>
 
@@ -112,10 +121,16 @@ function ProductCard({ product }: { product: Product }) {
             <div className="product-info">
                 <div className="product-brand">RQ Ateliê</div>
                 <div className="product-name">{product.name}</div>
+
                 {product.description && (
-                    <div className="product-description">{product.description}</div>
+                    <div className="product-description">
+                        {product.description}
+                    </div>
                 )}
-                <div className="product-price">{formatPrice(product.price)}</div>
+
+                <div className="product-price">
+                    {formatPrice(product.price)}
+                </div>
             </div>
 
             {/* CTA */}
@@ -125,13 +140,15 @@ function ProductCard({ product }: { product: Product }) {
                 rel="noopener noreferrer"
                 className="product-cta"
             >
-                {product.accepts_custom ? "Encomendar via WhatsApp" : "Falar sobre essa peça"}
+                {product.accepts_custom
+                    ? "Encomendar via WhatsApp"
+                    : "Falar sobre essa peça"}
             </a>
         </div>
     )
 }
 
-// ── Componente principal ──────────────────────────────────────────────────────
+// ── Componente principal ─────────────────────────────────────────────────────
 
 export default function ProductGrid() {
     const [products, setProducts] = useState<Product[]>([])
@@ -145,8 +162,8 @@ export default function ProductGrid() {
         const { data, error } = await supabase
             .from("products")
             .select("*")
-            .eq("is_available", true)   // só produtos disponíveis
-            .order("created_at", { ascending: false }) // mais recentes primeiro
+            .eq("is_available", true)
+            .order("created_at", { ascending: false })
 
         if (error) {
             console.error("Erro Supabase:", error.message)
@@ -165,7 +182,7 @@ export default function ProductGrid() {
 
     return (
         <section id="colecao" className="product-section">
-            {/* Cabeçalho da seção */}
+            {/* Cabeçalho */}
             <div className="section-head">
                 <div className="section-eyebrow">Coleção Atual</div>
                 <h2 className="section-title">
@@ -173,19 +190,22 @@ export default function ProductGrid() {
                 </h2>
             </div>
 
-            {/* Estados */}
+            {/* Loading */}
             {loading && (
                 <div className="product-grid">
-                    {Array.from({ length: 4 }).map((_, i) => (
+                    {Array.from({ length: 6 }).map((_, i) => (
                         <ProductCardSkeleton key={i} />
                     ))}
                 </div>
             )}
 
+            {/* Error */}
             {!loading && error && <ErrorState onRetry={fetchProducts} />}
 
+            {/* Empty */}
             {!loading && !error && products.length === 0 && <EmptyState />}
 
+            {/* Grid */}
             {!loading && !error && products.length > 0 && (
                 <div className="product-grid">
                     {products.map((product) => (
