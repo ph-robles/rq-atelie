@@ -244,3 +244,121 @@ body {
   text-decoration: none;
   border-radius: 8px;
 }
+
+/* ── FOOTER ───────────────────────────── */
+
+footer {
+  background: var(--black);
+  color: rgba(255, 255, 255, 0.55);
+  padding: 60px 80px 36px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid #2a2520;
+}
+
+.footer-brand {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.footer-brand em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.footer-tagline {
+  font-size: 12.5px;
+  line-height: 1.7;
+  max-width: 260px;
+  margin-bottom: 24px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-social a {
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.2s;
+}
+
+.footer-social a:hover {
+  color: white;
+}
+
+.footer-col-title {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  font-size: 12.5px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 28px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── FOOTER RESPONSIVE ───────────────── */
+
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  footer {
+    padding: 48px 24px 24px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
