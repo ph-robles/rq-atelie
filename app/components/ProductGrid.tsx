@@ -35,6 +35,28 @@ function buildWhatsAppLink(text: string): string {
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
 }
 
+/**
+ * Aceita:
+ * - URL completa (https://...)
+ * - path salvo no banco (ex: products/foto.jpg)
+ */
+function resolveImageUrl(
+    value: string | null | undefined
+): string | null {
+    if (!value) return null
+
+    if (value.startsWith("http")) {
+        return value
+    }
+
+    const { data } = supabase.storage
+        .from("product-images")
+        .getPublicUrl(value)
+
+    return data.publicUrl
+
+}
+
 /* ── Subcomponentes ────────────────────────────────────────────────────── */
 
 function ProductCardSkeleton() {
@@ -53,13 +75,14 @@ function ProductCardSkeleton() {
 
 function ProductCard({ product }: { product: Product }) {
     const whatsappLink = buildWhatsAppLink(product.whatsapp_text)
+    const imageSrc = resolveImageUrl(product.image_url)
 
     return (
         <div className="product-card">
             <div className="product-img">
-                {product.image_url ? (
+                {imageSrc ? (
                     <img
-                        src={product.image_url}
+                        src={imageSrc}
                         alt={product.name}
                         className="product-img__photo"
                     />
@@ -165,7 +188,9 @@ export default function ProductGrid() {
             )}
 
             {!loading && error && (
-                <p style={{ textAlign: "center" }}>Erro ao carregar produtos</p>
+                <p style={{ textAlign: "center" }}>
+                    Erro ao carregar produtos
+                </p>
             )}
 
             {!loading && !error && products.length > 0 && (
@@ -176,7 +201,6 @@ export default function ProductGrid() {
                         ))}
                     </div>
 
-                    {/* PAGINAÇÃO */}
                     <div className="pagination">
                         <button
                             disabled={page === 1}
