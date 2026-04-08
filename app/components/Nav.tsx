@@ -1,11 +1,18 @@
+// app/components/Nav.tsx
+import { WHATSAPP_URL } from "@/lib/config"
+
 export default function Nav() {
     return (
         <>
+            {/* ── Barra de aviso ── */}
             <div className="announce">
-                FRETE GRÁTIS PARA PEDIDOS ACIMA DE <span>R$ 200</span> · ENCOMENDAS{" "}
-                <span>PERSONALIZADAS</span>
+                FRETE GRÁTIS PARA PEDIDOS ACIMA DE{" "}
+                <span>R$ 200</span>{" "}
+                ·{" "}
+                ENCOMENDAS <span>PERSONALIZADAS</span>
             </div>
 
+            {/* ── Navegação principal ── */}
             <nav className="main-nav">
                 <ul className="nav-left">
                     <li>
@@ -22,7 +29,7 @@ export default function Nav() {
 
                 <div className="nav-right">
                     <a
-                        href="https://wa.me/5511999999999"
+                        href={WHATSAPP_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
