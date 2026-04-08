@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { WHATSAPP_NUMBER } from "@/lib/config"
 
-// Tipagem do produto (ajustada à sua tabela)
+/* ── Tipagem ───────────────────────────────────────────────────────────── */
+
 export interface Product {
     id: string
     name: string
@@ -17,7 +18,11 @@ export interface Product {
     is_available: boolean
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────────
+/* ── Configuração de paginação ────────────────────────────────────────── */
+
+const PAGE_SIZE = 6
+
+/* ── Helpers ───────────────────────────────────────────────────────────── */
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat("pt-BR", {
@@ -30,7 +35,7 @@ function buildWhatsAppLink(text: string): string {
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
 }
 
-// ── Sub‑componentes ─────────────────────────────────────────────────────────
+/* ── Subcomponentes ────────────────────────────────────────────────────── */
 
 function ProductCardSkeleton() {
     return (
@@ -46,61 +51,17 @@ function ProductCardSkeleton() {
     )
 }
 
-function EmptyState() {
-    return (
-        <div className="product-grid-empty">
-            <span className="product-grid-empty__icon">🧶</span>
-            <p className="product-grid-empty__title">
-                Nenhuma peça disponível no momento
-            </p>
-            <p className="product-grid-empty__sub">
-                Entre em contato pelo WhatsApp para encomendas personalizadas.
-            </p>
-
-            <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                    "Olá! Gostaria de saber sobre peças disponíveis e encomendas."
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-solid"
-            >
-                Falar no WhatsApp
-            </a>
-        </div>
-    )
-}
-
-function ErrorState({ onRetry }: { onRetry: () => void }) {
-    return (
-        <div className="product-grid-error">
-            <span className="product-grid-error__icon">⚠️</span>
-            <p className="product-grid-error__title">
-                Não foi possível carregar os produtos
-            </p>
-            <p className="product-grid-error__sub">
-                Verifique sua conexão e tente novamente.
-            </p>
-            <button onClick={onRetry} className="btn-solid">
-                Tentar novamente
-            </button>
-        </div>
-    )
-}
-
 function ProductCard({ product }: { product: Product }) {
     const whatsappLink = buildWhatsAppLink(product.whatsapp_text)
 
     return (
         <div className="product-card">
-            {/* Imagem */}
             <div className="product-img">
                 {product.image_url ? (
                     <img
                         src={product.image_url}
                         alt={product.name}
                         className="product-img__photo"
-                        loading="lazy"
                     />
                 ) : (
                     <span className="product-img__placeholder">🧶</span>
@@ -117,7 +78,6 @@ function ProductCard({ product }: { product: Product }) {
                 )}
             </div>
 
-            {/* Info */}
             <div className="product-info">
                 <div className="product-brand">RQ Ateliê</div>
                 <div className="product-name">{product.name}</div>
@@ -133,7 +93,6 @@ function ProductCard({ product }: { product: Product }) {
                 </div>
             </div>
 
-            {/* CTA */}
             <a
                 href={whatsappLink}
                 target="_blank"
@@ -148,41 +107,48 @@ function ProductCard({ product }: { product: Product }) {
     )
 }
 
-// ── Componente principal ─────────────────────────────────────────────────────
+/* ── Componente principal ─────────────────────────────────────────────── */
 
 export default function ProductGrid() {
     const [products, setProducts] = useState<Product[]>([])
+    const [total, setTotal] = useState(0)
+    const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+
+    const from = (page - 1) * PAGE_SIZE
+    const to = from + PAGE_SIZE - 1
 
     async function fetchProducts() {
         setLoading(true)
         setError(null)
 
-        const { data, error } = await supabase
+        const { data, error, count } = await supabase
             .from("products")
-            .select("*")
+            .select("*", { count: "exact" })
             .eq("is_available", true)
             .order("created_at", { ascending: false })
+            .range(from, to)
 
         if (error) {
-            console.error("Erro Supabase:", error.message)
             setError(error.message)
             setLoading(false)
             return
         }
 
         setProducts(data as Product[])
+        setTotal(count || 0)
         setLoading(false)
     }
 
     useEffect(() => {
         fetchProducts()
-    }, [])
+    }, [page])
+
+    const totalPages = Math.ceil(total / PAGE_SIZE)
 
     return (
         <section id="colecao" className="product-section">
-            {/* Cabeçalho */}
             <div className="section-head">
                 <div className="section-eyebrow">Coleção Atual</div>
                 <h2 className="section-title">
@@ -190,28 +156,47 @@ export default function ProductGrid() {
                 </h2>
             </div>
 
-            {/* Loading */}
             {loading && (
                 <div className="product-grid">
-                    {Array.from({ length: 6 }).map((_, i) => (
+                    {Array.from({ length: PAGE_SIZE }).map((_, i) => (
                         <ProductCardSkeleton key={i} />
                     ))}
                 </div>
             )}
 
-            {/* Error */}
-            {!loading && error && <ErrorState onRetry={fetchProducts} />}
+            {!loading && error && (
+                <p style={{ textAlign: "center" }}>Erro ao carregar produtos</p>
+            )}
 
-            {/* Empty */}
-            {!loading && !error && products.length === 0 && <EmptyState />}
-
-            {/* Grid */}
             {!loading && !error && products.length > 0 && (
-                <div className="product-grid">
-                    {products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
+                <>
+                    <div className="product-grid">
+                        {products.map((product) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+
+                    {/* PAGINAÇÃO */}
+                    <div className="pagination">
+                        <button
+                            disabled={page === 1}
+                            onClick={() => setPage((p) => p - 1)}
+                        >
+                            ← Anterior
+                        </button>
+
+                        <span>
+                            Página {page} de {totalPages}
+                        </span>
+
+                        <button
+                            disabled={page === totalPages}
+                            onClick={() => setPage((p) => p + 1)}
+                        >
+                            Próxima →
+                        </button>
+                    </div>
+                </>
             )}
         </section>
     )

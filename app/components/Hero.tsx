@@ -28,7 +28,7 @@ export default function Hero() {
 
             <div className="hero-image">
                 <img
-                    src="https://images.unsplash.com/photo-1618354691373-65b84b8a8f6c?auto=format&fit=crop&w=1200&q=80"
+                    src="https://pixabay.com/pt/images/download/printeboek-yarn-2564556_1920.jpg"
                     alt="Crochê artesanal"
                 />
             </div>
