@@ -48,7 +48,7 @@ export default function Hero() {
       */}
             <div className="hero-image">
                 <Image
-                    src="https://images.unsplash.com/photo-1612965110667-4175024b0f77?w=800&q=80"
+                    src="hero.jpg"
                     alt="Crochê artesanal feito à mão"
                     fill
                     priority
