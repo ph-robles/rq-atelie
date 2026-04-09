@@ -1,20 +1,16 @@
-// app/components/Hero.tsx
-import Image from "next/image"
+import ImageCarousel from "./ImageCarousel"
 import { WHATSAPP_URL } from "@/lib/config"
 
 export default function Hero() {
     return (
-        <section className="hero">
-
+        <section className="hero hero-split">
             {/* ── Lado esquerdo: texto ── */}
             <div className="hero-text">
                 <div className="hero-season">Coleção Atual</div>
 
                 <h1 className="hero-title">
-                    Arte feita{" "}
-                    <br />
-                    à <em>mão</em>,{" "}
-                    <br />
+                    Arte feita <br />
+                    à <em>mão</em>, <br />
                     ponto a ponto
                 </h1>
 
@@ -33,31 +29,17 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* ── Lado direito: imagem ── */}
-            {/*
-        IMPORTANTE: coloque uma foto real da Raquel ou dos produtos em:
-        /public/hero.jpg  (tamanho ideal: 800x1000px)
- 
-        Enquanto não tiver a foto real, estou usando uma imagem do Unsplash
-        que funciona diretamente como src externa.
- 
-        Quando tiver a foto real:
-        1. Coloque em /public/hero.jpg
-        2. Troque src para "/hero.jpg"
-        3. Remova o domínio de images.unsplash.com do next.config.js
-      */}
+            {/* ── Lado direito: carrossel de imagens ── */}
             <div className="hero-image">
-                <Image
-                    src="/hero.jpg"
-                    alt="Crochê artesanal feito à mão"
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: "cover" }}
+                <ImageCarousel
+                    images={[
+                        "/hero/01.jpg",
+                        "/hero/02.jpg",
+                        "/hero/03.jpg",
+                    ]}
+                    interval={4500}
                 />
             </div>
-
         </section>
     )
 }
-

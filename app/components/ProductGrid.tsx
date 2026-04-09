@@ -2,88 +2,47 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import { WHATSAPP_NUMBER } from "@/lib/config"
 
-/* ── Tipagem ───────────────────────────────────────────────────────────── */
+/* ========= TIPOS ========= */
 
-export interface Product {
+type Product = {
     id: string
-    name: string
-    description?: string | null
-    price: number
-    image_url?: string | null
-    whatsapp_text: string
+    name: string | null
+    price: number | null
+    image_url: string | null
+    whatsapp_text: string | null
     is_new: boolean
     accepts_custom: boolean
     is_available: boolean
 }
 
-/* ── Configuração de paginação ────────────────────────────────────────── */
+/* ========= HELPERS ========= */
 
-const PAGE_SIZE = 6
-
-/* ── Helpers ───────────────────────────────────────────────────────────── */
-
-function formatPrice(price: number): string {
+function formatPrice(price: number | null) {
+    if (!price) return ""
     return new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
     }).format(price)
 }
 
-function buildWhatsAppLink(text: string): string {
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
+function buildWhatsAppLink(text: string | null) {
+    const message = text ?? "Olá! Gostaria de saber mais sobre essa peça."
+    return `https://wa.me/5511999999999?text=${encodeURIComponent(message)}`
 }
 
-/**
- * Aceita:
- * - URL completa (https://...)
- * - path salvo no banco (ex: products/foto.jpg)
- */
-function resolveImageUrl(
-    value: string | null | undefined
-): string | null {
-    if (!value) return null
-
-    if (value.startsWith("http")) {
-        return value
-    }
-
-    const { data } = supabase.storage
-        .from("product-images")
-        .getPublicUrl(value)
-
-    return data.publicUrl
-
-}
-
-/* ── Subcomponentes ────────────────────────────────────────────────────── */
-
-function ProductCardSkeleton() {
-    return (
-        <div className="product-card product-card--skeleton">
-            <div className="product-img product-img--skeleton" />
-            <div className="product-info">
-                <div className="skeleton-line skeleton-line--short" />
-                <div className="skeleton-line" />
-                <div className="skeleton-line skeleton-line--price" />
-            </div>
-            <div className="product-cta product-cta--skeleton" />
-        </div>
-    )
-}
+/* ========= COMPONENTES ========= */
 
 function ProductCard({ product }: { product: Product }) {
     const whatsappLink = buildWhatsAppLink(product.whatsapp_text)
-    const imageSrc = resolveImageUrl(product.image_url)
 
     return (
         <div className="product-card">
             <div className="product-img">
-                {imageSrc ? (
+                {product.image_url ? (
                     <img
-                        src={imageSrc}
-                        alt={product.name}
+                        src={product.image_url}
+                        alt={product.name ?? "Produto artesanal"}
                         className="product-img__photo"
                     />
                 ) : (
@@ -104,13 +63,6 @@ function ProductCard({ product }: { product: Product }) {
             <div className="product-info">
                 <div className="product-brand">RQ Ateliê</div>
                 <div className="product-name">{product.name}</div>
-
-                {product.description && (
-                    <div className="product-description">
-                        {product.description}
-                    </div>
-                )}
-
                 <div className="product-price">
                     {formatPrice(product.price)}
                 </div>
@@ -122,53 +74,42 @@ function ProductCard({ product }: { product: Product }) {
                 rel="noopener noreferrer"
                 className="product-cta"
             >
-                {product.accepts_custom
-                    ? "Encomendar via WhatsApp"
-                    : "Falar sobre essa peça"}
+                Falar sobre essa peça
             </a>
         </div>
     )
 }
 
-/* ── Componente principal ─────────────────────────────────────────────── */
+/* ========= GRID ========= */
 
 export default function ProductGrid() {
     const [products, setProducts] = useState<Product[]>([])
-    const [total, setTotal] = useState(0)
-    const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-
-    const from = (page - 1) * PAGE_SIZE
-    const to = from + PAGE_SIZE - 1
-
-    async function fetchProducts() {
-        setLoading(true)
-        setError(null)
-
-        const { data, error, count } = await supabase
-            .from("products")
-            .select("*", { count: "exact" })
-            .eq("is_available", true)
-            .order("created_at", { ascending: false })
-            .range(from, to)
-
-        if (error) {
-            setError(error.message)
-            setLoading(false)
-            return
-        }
-
-        setProducts(data as Product[])
-        setTotal(count || 0)
-        setLoading(false)
-    }
 
     useEffect(() => {
-        fetchProducts()
-    }, [page])
+        async function loadProducts() {
+            const { data } = await supabase
+                .from("products")
+                .select("*")
+                .eq("is_available", true)
+                .order("id", { ascending: false })
 
-    const totalPages = Math.ceil(total / PAGE_SIZE)
+            setProducts((data ?? []) as Product[])
+            setLoading(false)
+        }
+
+        loadProducts()
+    }, [])
+
+    if (loading) {
+        return (
+            <div className="product-grid">
+                <div className="product-card">Carregando…</div>
+                <div className="product-card">Carregando…</div>
+                <div className="product-card">Carregando…</div>
+            </div>
+        )
+    }
 
     return (
         <section id="colecao" className="product-section">
@@ -179,49 +120,11 @@ export default function ProductGrid() {
                 </h2>
             </div>
 
-            {loading && (
-                <div className="product-grid">
-                    {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                        <ProductCardSkeleton key={i} />
-                    ))}
-                </div>
-            )}
-
-            {!loading && error && (
-                <p style={{ textAlign: "center" }}>
-                    Erro ao carregar produtos
-                </p>
-            )}
-
-            {!loading && !error && products.length > 0 && (
-                <>
-                    <div className="product-grid">
-                        {products.map((product) => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
-                    </div>
-
-                    <div className="pagination">
-                        <button
-                            disabled={page === 1}
-                            onClick={() => setPage((p) => p - 1)}
-                        >
-                            ← Anterior
-                        </button>
-
-                        <span>
-                            Página {page} de {totalPages}
-                        </span>
-
-                        <button
-                            disabled={page === totalPages}
-                            onClick={() => setPage((p) => p + 1)}
-                        >
-                            Próxima →
-                        </button>
-                    </div>
-                </>
-            )}
+            <div className="product-grid">
+                {products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                ))}
+            </div>
         </section>
     )
 }
