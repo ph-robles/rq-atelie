@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import FadeIn from "./FadeIn"
 import ScrollReveal from "./ScrollReveal"
 
 /* ========= TIPOS ========= */
@@ -122,18 +121,16 @@ export default function ProductGrid() {
                 </h2>
             </div>
 
-            <FadeIn>
-                <div className="product-grid">
-                    {products.map((product, index) => (
-                        <ScrollReveal
-                            key={product.id}
-                            delay={(index % 6) + 1}
-                        >
-                            <ProductCard product={product} />
-                        </ScrollReveal>
-                    ))}
-                </div>
-            </FadeIn>
+            <div className="product-grid">
+                {products.map((product, index) => (
+                    <ScrollReveal
+                        key={product.id}
+                        delay={(index % 6) + 1}
+                    >
+                        <ProductCard product={product} />
+                    </ScrollReveal>
+                ))}
+            </div>
         </section>
     )
 }
