@@ -1,5 +1,4 @@
 import ImageCarousel from "./ImageCarousel"
-import { WHATSAPP_URL } from "@/lib/config"
 
 export default function Hero() {
     return (
@@ -29,7 +28,7 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* ── Lado direito: carrossel de imagens ── */}
+            {/* ── Lado direito: carrossel ── */}
             <div className="hero-image">
                 <ImageCarousel
                     images={[

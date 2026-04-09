@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
+import FadeIn from "./FadeIn"
 
 /* ========= TIPOS ========= */
 
@@ -28,7 +29,7 @@ function formatPrice(price: number | null) {
 
 function buildWhatsAppLink(text: string | null) {
     const message = text ?? "Olá! Gostaria de saber mais sobre essa peça."
-    return `https://wa.me/5511999999999?text=${encodeURIComponent(message)}`
+    return `https://wa.me/5521976612269?text=${encodeURIComponent(message)}`
 }
 
 /* ========= COMPONENTES ========= */
@@ -120,11 +121,13 @@ export default function ProductGrid() {
                 </h2>
             </div>
 
-            <div className="product-grid">
-                {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
-            </div>
+            <FadeIn>
+                <div className="product-grid">
+                    {products.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>
+            </FadeIn>
         </section>
     )
 }
