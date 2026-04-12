@@ -60,12 +60,12 @@ export default function SobrePage() {
                         </div>
 
                         <div className="sobre-story__image">
-                            {/* Troque por uma foto real da Raquel:
-                  /public/sobre/raquel.jpg */}
-                            <div className="sobre-story__photo-placeholder">
-                                <span>📸</span>
-                                <small>Foto da Raquel</small>
-                            </div>
+                            <img
+                                src="/sobre/raquel.jpg"
+                                alt="Foto da artesã do RQ Ateliê"
+                                className="sobre-story__photo"
+                                style={{objectFit:'cover'}}
+                            />
                         </div>
 
                     </div>
