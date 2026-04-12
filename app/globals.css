@@ -1,5 +1,5 @@
 /* ============================================================
-   RQ Ateliê — globals.css
+   RQ Ateliê — globals.css (versão final, sem duplicatas)
    ============================================================ */
 
 /* ── Variáveis ─────────────────────────────────────────────── */
@@ -47,7 +47,6 @@ a {
   text-decoration: none;
 }
 
-/* ── Tipografia ─────────────────────────────────────────────── */
 h1,
 h2,
 h3 {
@@ -147,14 +146,12 @@ h3 {
   min-height: 90vh;
 }
 
-/* Lado esquerdo — texto */
 .hero-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 80px;
   background: var(--off);
-  animation: fadeUp 0.9s ease forwards;
 }
 
 .hero-season {
@@ -195,12 +192,120 @@ h3 {
   flex-wrap: wrap;
 }
 
-/* Lado direito — imagem */
+/* obrigatório para next/image fill e carrossel */
 .hero-image {
   position: relative;
-  /* obrigatório para next/image com fill */
   overflow: hidden;
   background: var(--linen);
+}
+
+/* cada linha do título anima separado */
+.hero-line {
+  display: block;
+}
+
+/* ── Animação escalonada ── */
+.hero-animate {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeUp 0.7s ease forwards;
+}
+
+.hero-animate--1 {
+  animation-delay: 0.10s;
+}
+
+.hero-animate--2 {
+  animation-delay: 0.25s;
+}
+
+.hero-animate--3 {
+  animation-delay: 0.40s;
+}
+
+.hero-animate--4 {
+  animation-delay: 0.55s;
+}
+
+.hero-animate--5 {
+  animation-delay: 0.75s;
+}
+
+.hero-animate--6 {
+  animation-delay: 0.95s;
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   CARROSSEL (Ken Burns + indicadores)
+   ============================================================ */
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.carousel-slide--active {
+  opacity: 1;
+}
+
+/* Ken Burns */
+.carousel-img {
+  transform: scale(1);
+  transition: transform 0s;
+}
+
+.carousel-img--zoom {
+  transform: scale(1.08);
+  transition: transform 6s ease;
+}
+
+/* Indicadores */
+.carousel-indicators {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.carousel-indicator {
+  width: 32px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-indicator-fill {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  background: white;
+  transition: width 0.05s linear;
 }
 
 /* ============================================================
@@ -293,11 +398,12 @@ h3 {
   display: flex;
   flex-direction: column;
   background: var(--white);
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.35s ease;
 }
 
 .product-card:hover {
   background: var(--off);
+  transform: translateY(-2px);
 }
 
 /* Imagem */
@@ -312,13 +418,27 @@ h3 {
   justify-content: center;
 }
 
+.product-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.product-card:hover .product-img::after {
+  opacity: 1;
+}
+
 .product-img__photo {
   object-fit: cover;
   transition: transform 0.6s ease;
 }
 
 .product-card:hover .product-img__photo {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 
 .product-img__placeholder {
@@ -371,6 +491,7 @@ h3 {
   line-height: 1.3;
 }
 
+/* ✅ line-clamp corrigido — prefixo + propriedade padrão */
 .product-description {
   font-size: 12px;
   color: var(--muted);
@@ -378,6 +499,7 @@ h3 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   overflow: hidden;
 }
 
@@ -402,7 +524,8 @@ h3 {
   text-transform: uppercase;
   color: var(--mid);
   cursor: pointer;
-  transition: all 0.2s;
+  opacity: 0.85;
+  transition: opacity 0.3s ease, background 0.2s, color 0.2s, border-color 0.2s;
   font-family: inherit;
   text-align: center;
 }
@@ -411,6 +534,7 @@ h3 {
   background: var(--green);
   color: white;
   border-color: var(--green);
+  opacity: 1;
 }
 
 /* ============================================================
@@ -489,6 +613,44 @@ h3 {
   max-width: 320px;
   line-height: 1.6;
   margin-bottom: 8px;
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal[data-delay="1"] {
+  transition-delay: 0.05s;
+}
+
+.reveal[data-delay="2"] {
+  transition-delay: 0.10s;
+}
+
+.reveal[data-delay="3"] {
+  transition-delay: 0.15s;
+}
+
+.reveal[data-delay="4"] {
+  transition-delay: 0.20s;
+}
+
+.reveal[data-delay="5"] {
+  transition-delay: 0.25s;
+}
+
+.reveal[data-delay="6"] {
+  transition-delay: 0.30s;
 }
 
 /* ============================================================
@@ -577,7 +739,6 @@ h3 {
    ============================================================ */
 footer {
   background: var(--black);
-  /* agora funciona — --black está definido */
   color: rgba(255, 255, 255, 0.5);
   padding: 60px 80px 36px;
 }
@@ -602,7 +763,6 @@ footer {
 .footer-brand em {
   font-style: italic;
   color: var(--accent);
-  /* agora funciona — --accent está definido */
 }
 
 .footer-tagline {
@@ -667,32 +827,9 @@ footer {
 }
 
 /* ============================================================
-   ANIMAÇÕES
-   ============================================================ */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ============================================================
    RESPONSIVO
    ============================================================ */
 @media (max-width: 1024px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .hero {
     grid-template-columns: 1fr;
   }
@@ -703,6 +840,24 @@ footer {
 
   .hero-text {
     padding: 60px 40px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-card:hover {
+    transform: none;
+  }
+
+  .product-card:hover .product-img__photo {
+    transform: scale(1.03);
   }
 }
 
@@ -729,6 +884,14 @@ footer {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .section-head {
+    padding: 52px 20px 36px;
+  }
+
+  .newsletter {
+    padding: 60px 20px;
+  }
+
   footer {
     padding: 48px 24px 24px;
   }
@@ -742,334 +905,4 @@ footer {
     flex-direction: column;
     text-align: center;
   }
-
-  .section-head {
-    padding: 52px 20px 36px;
-  }
-
-  .newsletter {
-    padding: 60px 20px;
-  }
-}
-
-/* ── CARROSSEL ───────────────────────── */
-
-.carousel {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.carousel-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-.carousel-img.active {
-  opacity: 1;
-}
-
-/* ── HERO SPLIT ───────────────────────── */
-
-.hero-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 90vh;
-}
-
-.hero-image {
-  position: relative;
-  overflow: hidden;
-}
-
-/* ── CARROSSEL ───────────────────────── */
-
-.carousel {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.carousel-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-.carousel-img.active {
-  opacity: 1;
-}
-
-/* ── RESPONSIVO ───────────────────────── */
-
-@media (max-width: 1024px) {
-  .hero-split {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-image {
-    height: 60vh;
-  }
-}
-
-.product-img {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  background: #f4f2ee;
-  overflow: hidden;
-}
-
-.product-img__photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ── FADE IN ON SCROLL ───────────────── */
-
-.fade-in {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ── SCROLL REVEAL ───────────────────── */
-
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* delay progressivo */
-.reveal[data-delay="1"] {
-  transition-delay: 0.05s;
-}
-
-.reveal[data-delay="2"] {
-  transition-delay: 0.10s;
-}
-
-.reveal[data-delay="3"] {
-  transition-delay: 0.15s;
-}
-
-.reveal[data-delay="4"] {
-  transition-delay: 0.20s;
-}
-
-.reveal[data-delay="5"] {
-  transition-delay: 0.25s;
-}
-
-.reveal[data-delay="6"] {
-  transition-delay: 0.30s;
-}
-
-/* ── HOVER PREMIUM (PRODUTOS) ─────────── */
-
-/* container do card */
-.product-card {
-  background: white;
-  transition: transform 0.35s ease;
-}
-
-/* imagem */
-.product-img {
-  position: relative;
-  overflow: hidden;
-}
-
-/* zoom suave */
-.product-img__photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-/* overlay sutil */
-.product-img::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.08);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-/* CTA mais discreto inicialmente */
-.product-cta {
-  opacity: 0.85;
-  transition: opacity 0.3s ease, background 0.3s ease;
-}
-
-/* ── HOVER ───────────────────────────── */
-
-.product-card:hover .product-img__photo {
-  transform: scale(1.06);
-}
-
-.product-card:hover .product-img::after {
-  opacity: 1;
-}
-
-.product-card:hover .product-cta {
-  opacity: 1;
-}
-
-/* opcional: leve lift */
-.product-card:hover {
-  transform: translateY(-2px);
-}
-
-/* ── MOBILE (não exagerar) ───────────── */
-
-@media (max-width: 768px) {
-  .product-card:hover {
-    transform: none;
-  }
-
-  .product-card:hover .product-img__photo {
-    transform: scale(1.03);
-  }
-}
-
-/* ============================================================
-   Adicione isso no FINAL do seu globals.css
-   ============================================================ */
-
-/* ── CARROSSEL ─────────────────────────────────────────────── */
-.carousel {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* Cada slide ocupa o espaço inteiro, empilhado */
-.carousel-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 1.2s ease;
-  /* fade suave entre slides */
-}
-
-.carousel-slide--active {
-  opacity: 1;
-}
-
-/* Ken Burns — zoom lento enquanto o slide está ativo */
-.carousel-img {
-  transform: scale(1);
-  transition: transform 0s;
-}
-
-.carousel-img--zoom {
-  transform: scale(1.08);
-  transition: transform 6s ease;
-  /* zoom bem lento, 6s */
-}
-
-/* ── INDICADORES ────────────────────────────────────────────── */
-.carousel-indicators {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  display: flex;
-  gap: 8px;
-  z-index: 10;
-}
-
-.carousel-indicator {
-  width: 32px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.carousel-indicator-fill {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  background: white;
-  transition: width 0.05s linear;
-  /* suave mas sem lag */
-}
-
-/* ── HERO TEXT — ANIMAÇÃO ESCALONADA ────────────────────────── */
-
-/* Estado inicial: invisível e deslocado */
-.hero-animate {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: heroFadeUp 0.7s ease forwards;
-}
-
-/* Cada elemento entra com delay diferente */
-.hero-animate--1 {
-  animation-delay: 0.1s;
-}
-
-.hero-animate--2 {
-  animation-delay: 0.25s;
-}
-
-.hero-animate--3 {
-  animation-delay: 0.4s;
-}
-
-.hero-animate--4 {
-  animation-delay: 0.55s;
-}
-
-.hero-animate--5 {
-  animation-delay: 0.75s;
-}
-
-.hero-animate--6 {
-  animation-delay: 0.95s;
-}
-
-@keyframes heroFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Cada linha do título em bloco para animar separado */
-.hero-line {
-  display: block;
 }
