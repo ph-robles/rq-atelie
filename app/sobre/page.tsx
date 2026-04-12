@@ -1,5 +1,6 @@
 // app/sobre/page.tsx
 import type { Metadata } from "next"
+import Image from "next/image"
 import Nav from "../components/Nav"
 import Footer from "../components/Footer"
 import Newsletter from "../components/Newsletter"
@@ -19,7 +20,25 @@ export default function SobrePage() {
 
                 {/* ── HERO DA PÁGINA ── */}
                 <section className="sobre-hero">
-                    <div className="sobre-hero__image" />
+
+                    {/*
+            Foto temporária do Unsplash — mãos trabalhando com crochê.
+            Quando tiver foto real da Raquel:
+            1. Coloque em /public/sobre/raquel-hero.jpg
+            2. Troque src para "/sobre/raquel-hero.jpg"
+            3. Remova images.unsplash.com do next.config.js
+          */}
+                    <div className="sobre-hero__image">
+                        <Image
+                            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
+                            alt="Mãos criando crochê artesanal"
+                            fill
+                            priority
+                            sizes="50vw"
+                            style={{ objectFit: "cover", objectPosition: "center" }}
+                        />
+                    </div>
+
                     <div className="sobre-hero__text">
                         <div className="section-eyebrow">Nossa história</div>
                         <h1 className="sobre-hero__title">
@@ -64,7 +83,7 @@ export default function SobrePage() {
                                 src="/sobre/raquel.jpg"
                                 alt="Foto da artesã do RQ Ateliê"
                                 className="sobre-story__photo"
-                                style={{objectFit:'cover'}}
+                                style={{ objectFit: 'cover' }}
                             />
                         </div>
 
@@ -172,3 +191,4 @@ export default function SobrePage() {
         </>
     )
 }
+
