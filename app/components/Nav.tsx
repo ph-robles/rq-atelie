@@ -19,7 +19,7 @@ export default function Nav() {
                         <a href="#colecao">Coleção</a>
                     </li>
                     <li>
-                        <a href="#sobre">Sobre</a>
+                        <a href="sobre">Sobre</a>
                     </li>
                 </ul>
 

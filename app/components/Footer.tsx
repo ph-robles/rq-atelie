@@ -9,7 +9,7 @@ export default function Footer() {
                 <div>
                     <div className="footer-brand">RQ <em>Ateliê</em></div>
                     <div className="footer-tagline">
-                        Crochê e macramê artesanal feito à mão, ponto a ponto.
+                        Crochê artesanal feito à mão, ponto a ponto.
                     </div>
                     <div className="footer-social">
                         <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">

@@ -25,7 +25,7 @@ export default function Hero() {
 
                 <div className="hero-actions hero-animate hero-animate--6">
                     <a href="#colecao" className="btn-solid">Ver peças</a>
-                    <a href="#sobre" className="btn-ghost">Nossa história</a>
+                    <a href="sobre" className="btn-ghost">Nossa história</a>
                 </div>
 
             </div>
