@@ -957,7 +957,7 @@ footer {
   background-position: center;
   position: relative;
   overflow: hidden;
-  
+
 
 }
 
@@ -1404,4 +1404,430 @@ footer {
   color: white;
   border-color: var(--black);
   opacity: 1;
+}
+
+/* ============================================================
+   Adicione no FINAL do globals.css
+   ============================================================ */
+
+/* ── HERO DA PÁGINA ENCOMENDAS ──────────────────────────────── */
+.enc-hero {
+  background: var(--black);
+  padding: 100px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.enc-hero::before {
+  content: "";
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(196, 113, 74, 0.15), transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.enc-hero__inner {
+  max-width: 700px;
+  position: relative;
+  z-index: 2;
+}
+
+.enc-hero .section-eyebrow {
+  color: var(--accent);
+}
+
+.enc-hero__title {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: white;
+  margin: 16px 0 20px;
+}
+
+.enc-hero__title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.enc-hero__desc {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.8;
+  max-width: 520px;
+}
+
+/* ── COMO FUNCIONA ──────────────────────────────────────────── */
+.enc-steps {
+  border-bottom: 1px solid var(--border);
+}
+
+.enc-steps__inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.enc-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 48px 40px;
+  border-right: 1px solid var(--border);
+}
+
+.enc-step:last-child {
+  border-right: none;
+}
+
+.enc-step__num {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.enc-step__title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.3;
+}
+
+.enc-step__desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── SEÇÃO DO FORMULÁRIO ────────────────────────────────────── */
+.enc-form-section {
+  padding: 100px 80px;
+}
+
+.enc-form-section__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* Lado esquerdo */
+.enc-form-section__left {
+  position: sticky;
+  top: 80px;
+}
+
+.enc-form-section__title {
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--black);
+  margin: 16px 0 16px;
+}
+
+.enc-form-section__title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.enc-form-section__sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+/* Cards de info */
+.enc-info-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.enc-info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: var(--light);
+  border: 1px solid var(--border);
+}
+
+.enc-info-card__icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.enc-info-card__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.enc-info-card__desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--muted);
+}
+
+/* ── FORMULÁRIO ─────────────────────────────────────────────── */
+.enc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 48px;
+}
+
+/* Campo */
+.enc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.enc-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dark);
+  font-weight: 500;
+}
+
+.enc-input,
+.enc-textarea {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--off);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--dark);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  resize: none;
+}
+
+.enc-input::placeholder,
+.enc-textarea::placeholder {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.enc-input:focus,
+.enc-textarea:focus {
+  border-color: var(--accent);
+  background: white;
+}
+
+/* Campo com erro */
+.enc-field--error .enc-input,
+.enc-field--error .enc-textarea {
+  border-color: #C0392B;
+  background: #FEF9F9;
+}
+
+.enc-error {
+  font-size: 12px;
+  color: #C0392B;
+  letter-spacing: 0.3px;
+}
+
+.enc-hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Botões de ocasião */
+.enc-ocasiao-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.enc-ocasiao-btn {
+  padding: 14px 12px;
+  border: 1px solid var(--border);
+  background: var(--off);
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  font-weight: 400;
+}
+
+.enc-ocasiao-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.enc-ocasiao-btn--active {
+  border-color: var(--black);
+  background: var(--black);
+  color: white;
+}
+
+/* Submit */
+.enc-submit {
+  width: 100%;
+  padding: 16px;
+  background: var(--black);
+  color: white;
+  border: none;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.enc-submit:hover:not(:disabled) {
+  background: var(--accent);
+}
+
+.enc-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.enc-disclaimer {
+  font-size: 11.5px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── ESTADO DE SUCESSO ──────────────────────────────────────── */
+.enc-success {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 72px 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.enc-success__icon {
+  font-size: 48px;
+}
+
+.enc-success__title {
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--black);
+}
+
+.enc-success__desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--mid);
+  max-width: 300px;
+  line-height: 1.7;
+}
+
+/* Loader animado */
+.enc-success__loader {
+  width: 40px;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.enc-success__loader::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  animation: loaderSlide 0.8s ease forwards;
+}
+
+@keyframes loaderSlide {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ── RESPONSIVO ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .enc-steps__inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .enc-step {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .enc-step:nth-child(2) {
+    border-right: none;
+  }
+
+  .enc-step:nth-child(3),
+  .enc-step:nth-child(4) {
+    border-bottom: none;
+  }
+
+  .enc-form-section__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .enc-form-section__left {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .enc-hero {
+    padding: 80px 24px;
+  }
+
+  .enc-steps__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .enc-step {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .enc-step:last-child {
+    border-bottom: none;
+  }
+
+  .enc-form-section {
+    padding: 60px 24px;
+  }
+
+  .enc-form {
+    padding: 32px 24px;
+  }
+
+  .enc-ocasiao-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }

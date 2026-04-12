@@ -26,7 +26,7 @@ export default function Footer() {
                     <ul className="footer-links">
                         <li><a href="/#colecao">Coleção</a></li>
                         <li><a href="/sobre">Sobre</a></li>
-                        <li><a href="/#colecao">Encomendas</a></li>
+                        <li><a href="/encomendas">Encomendas</a></li>
                     </ul>
                 </div>
 
