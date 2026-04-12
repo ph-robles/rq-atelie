@@ -30,7 +30,7 @@ export default function SobrePage() {
           */}
                     <div className="sobre-hero__image">
                         <Image
-                            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
+                            src="/sobre/raquel-hero.jpg"
                             alt="Mãos criando crochê artesanal"
                             fill
                             priority

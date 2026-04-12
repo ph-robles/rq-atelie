@@ -1234,3 +1234,171 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   Adicione no FINAL do globals.css
+   ============================================================ */
+
+/* ── CURSOR PERSONALIZADO ──────────────────────────────────── */
+
+/*
+  Esconde o cursor padrão em todo o site.
+  O "none" só se aplica em dispositivos com mouse —
+  em touch o cursor não existe, então não afeta mobile.
+*/
+@media (pointer: fine) {
+
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
+/* Ponto central — pequeno, segue instantaneamente */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  /* centraliza o ponto no mouse */
+  margin-left: -2.5px;
+  margin-top: -2.5px;
+  transition: opacity 0.2s;
+}
+
+/* Anel externo — maior, segue com lag via JS */
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  /* centraliza o anel no mouse */
+  margin-left: -18px;
+  margin-top: -18px;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease,
+    margin 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    opacity 0.2s;
+}
+
+/* Hover em links/botões — anel cresce e fica mais visível */
+.cursor-ring--hover {
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  margin-top: -28px;
+  border-color: var(--accent);
+  background: rgba(196, 113, 74, 0.08);
+}
+
+/* Clique — anel encolhe rapidamente */
+.cursor-ring--click {
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  margin-top: -12px;
+  background: rgba(196, 113, 74, 0.15);
+}
+
+/* ── HOVER PREMIUM NOS CARDS DE PRODUTO ────────────────────── */
+
+/*
+  Sobreposição que sobe de baixo com preço e botão
+  ao passar o mouse no card.
+*/
+
+/* O card precisa de overflow hidden para o overlay não vazar */
+.product-card {
+  overflow: hidden;
+}
+
+/* Overlay desliza de baixo para cima */
+.product-img__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+      rgba(26, 20, 16, 0.75) 0%,
+      rgba(26, 20, 16, 0.2) 50%,
+      transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 3;
+}
+
+.product-card:hover .product-img__overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Preço dentro do overlay */
+.product-img__overlay-price {
+  font-size: 18px;
+  font-weight: 300;
+  color: white;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  transform: translateY(10px);
+  transition: transform 0.35s ease 0.05s;
+}
+
+.product-card:hover .product-img__overlay-price {
+  transform: translateY(0);
+}
+
+/* Botão dentro do overlay */
+.product-img__overlay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--black);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border: none;
+  cursor: none;
+  /* usa o cursor personalizado */
+  font-family: inherit;
+  width: fit-content;
+  transform: translateY(10px);
+  transition: background 0.2s, transform 0.35s ease 0.1s;
+  text-decoration: none;
+}
+
+.product-card:hover .product-img__overlay-btn {
+  transform: translateY(0);
+}
+
+.product-img__overlay-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+
+/* Esconde o botão fixo de baixo quando hover ativo —
+   evita duplicar a ação */
+.product-card:hover .product-cta {
+  background: var(--black);
+  color: white;
+  border-color: var(--black);
+  opacity: 1;
+}
