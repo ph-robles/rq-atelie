@@ -950,12 +950,15 @@ footer {
 }
 
 .sobre-hero__image {
-  background: linear-gradient(135deg, var(--linen), #C8AA8C);
-  /* Troque por:
-     background-image: url('/sobre/banner.jpg');
-     background-size: cover;
-     background-position: center;
-  */
+  /* background: linear-gradient(135deg, var(--linen), #C8AA8C); */
+  /* Troque por:*/
+  background-image: url('/sobre/banner.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  
+
 }
 
 .sobre-hero__text {
